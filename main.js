@@ -2,8 +2,9 @@ import fs from 'fs';
 import path from 'path';
 
 import { weatherFileParser } from './parser/weatherFileParser.js';
-import { calculateYearlyExtremes } from './calculations/calculator.js';
+import { calculateYearlyExtremes, calculateMonthlyAverages } from './calculations/calculator.js';
 import { yearlyExtremesReport } from './reports/yearlyExtremesReport.js';
+import { monthlyAveragesReport } from './reports/monthlyAveragesReport.js';
 
 function parseAllReadingsFromDataFolder(dataDir) {
     const weatherReadings = [];
@@ -45,7 +46,13 @@ function main() {
         const extremes = calculateYearlyExtremes(weatherReadings, year);
         //print the report
         yearlyExtremesReport(extremes);
-    } else {
+    }else if (flag === '-a') {
+        const [yearStr, monthStr] = value.split('/');
+        const year = parseInt(yearStr, 10);
+        const month = parseInt(monthStr, 10);
+        const averages = calculateMonthlyAverages(weatherReadings, year, month);
+        monthlyAveragesReport(averages);
+    }  else {
         console.log('Unknown flag');
     }
 

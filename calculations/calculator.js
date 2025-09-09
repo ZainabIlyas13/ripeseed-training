@@ -2,6 +2,15 @@ function filterReadingsByYear(readings, year) {
     return readings.filter(r => r && r.date instanceof Date && !isNaN(r.date) && r.date.getFullYear() === year);
 }
 
+function filterReadingsByYearMonth(readings, year, month) {
+    return readings.filter(r => r.date instanceof Date && !isNaN(r.date)
+        && r.date.getFullYear() === year && (r.date.getMonth() + 1) === month);
+}
+
+const calculateAverage = (nums) => {
+    return nums.length ? nums.reduce((s, n) => s + n, 0) / nums.length : null;
+};
+
 export function calculateYearlyExtremes(readings, year) {
     const yearReadings = filterReadingsByYear(readings, year);
     if (yearReadings.length === 0) return null;
@@ -28,3 +37,20 @@ export function calculateYearlyExtremes(readings, year) {
 
     return { highestTemp, lowestTemp, mostHumid };
 }
+
+export function calculateMonthlyAverages(readings, year, month) {
+    const monthReadings = filterReadingsByYearMonth(readings, year, month);
+    if (monthReadings.length === 0) return null;
+
+    const highTemperatures = monthReadings.map(r => r.maxTemperature);
+    const lowTemperatures = monthReadings.map(r => r.minTemperature);
+    const meanHumidities = monthReadings.map(r => r.meanHumidity);
+
+    return {
+        highestAverage: calculateAverage(highTemperatures),
+        lowestAverage: calculateAverage(lowTemperatures),
+        averageMeanHumidity: calculateAverage(meanHumidities)
+    };
+}
+
+
