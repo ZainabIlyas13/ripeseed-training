@@ -53,4 +53,6 @@ export function calculateMonthlyAverages(readings, year, month) {
     };
 }
 
-
+export function listMonthlyReadings(readings, year, month) {
+    return filterReadingsByYearMonth(readings, year, month);
+}

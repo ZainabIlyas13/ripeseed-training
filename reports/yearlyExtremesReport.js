@@ -7,16 +7,13 @@ export function yearlyExtremesReport(extremes) {
 
     const lines = [];
     if (highestTemp?.date instanceof Date) {
-        lines.push(`Highest: ${Math.round(highestTemp.value)}C on ${dtMonth.format(highestTemp.date)} ${dtDay.format(highestTemp.date)}`);
+        lines.push(`Highest Temperature: ${Math.round(highestTemp.value)}C on ${dtMonth.format(highestTemp.date)} ${dtDay.format(highestTemp.date)}`);
     }
     if (lowestTemp?.date instanceof Date) {
-        lines.push(`Lowest: ${Math.round(lowestTemp.value)}C on ${dtMonth.format(lowestTemp.date)} ${dtDay.format(lowestTemp.date)}`);
+        lines.push(`Lowest Temperature: ${Math.round(lowestTemp.value)}C on ${dtMonth.format(lowestTemp.date)} ${dtDay.format(lowestTemp.date)}`);
     }
     if (mostHumid?.date instanceof Date) {
         lines.push(`Humidity: ${Math.round(mostHumid.value)}% on ${dtMonth.format(mostHumid.date)} ${dtDay.format(mostHumid.date)}`);
     }
     console.log(lines.join('\n'))
 }
-
-
-
