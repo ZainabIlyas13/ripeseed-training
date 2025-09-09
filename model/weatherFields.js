@@ -34,4 +34,4 @@ class WeatherFields {
     }
 }
 
-module.exports = WeatherFields;
+export default WeatherFields;

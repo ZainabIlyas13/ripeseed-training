@@ -1,7 +1,9 @@
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
 
-const { weatherFileParser } = require('./parser/weatherFileParser');
+import { weatherFileParser } from './parser/weatherFileParser.js';
+import { calculateYearlyExtremes } from './calculations/calculator.js';
+import { yearlyExtremesReport } from './reports/yearlyExtremesReport.js';
 
 function parseAllReadingsFromDataFolder(dataDir) {
     const weatherReadings = [];
@@ -37,7 +39,16 @@ function main() {
         return;
     }
 
-   console.log(weatherReadings);
+    //flag conditions for each report type
+    if (flag === '-e') { //yearly extremes
+        const year = parseInt(value, 10);
+        const extremes = calculateYearlyExtremes(weatherReadings, year);
+        //print the report
+        yearlyExtremesReport(extremes);
+    } else {
+        console.log('Unknown flag');
+    }
+
 }
 
 main();

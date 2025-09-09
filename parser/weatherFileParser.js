@@ -1,8 +1,8 @@
-const fs = require('fs');
-const path = require('path');
-const WeatherFields = require('../model/weatherFields');
+import fs from 'fs';
+import path from 'path';
+import WeatherFields from '../model/weatherFields.js';
 
-function weatherFileParser(filePath) {
+export function weatherFileParser(filePath) {
     const fullPath = path.resolve(filePath);
     const data = fs.readFileSync(fullPath, 'utf-8');
 
@@ -40,4 +40,3 @@ function weatherFileParser(filePath) {
     return weatherRecords;
 }
 
-module.exports = { weatherFileParser };
