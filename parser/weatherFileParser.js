@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import WeatherFields from '../model/weatherFields.js';
 
-export function weatherFileParser(filePath) {
+export const weatherFileParser = (filePath) => {
     const fullPath = path.resolve(filePath);
     const data = fs.readFileSync(fullPath, 'utf-8');
 
@@ -16,26 +16,38 @@ export function weatherFileParser(filePath) {
 
     //extract the headers row
     const header = lines[0].split(',').map(h => h.trim());
+    const requiredFields = new Set([
+        'PKT',
+        'Max TemperatureC',
+        'Mean TemperatureC',
+        'Min TemperatureC',
+        'Max Humidity',
+        'Mean Humidity',
+        'Min Humidity'
+    ]);
     const weatherRecords = [];
 
     //gather all the data for each record
-    for (let i = 1; i < lines.length; i++) {
-        const values = lines[i].split(',');
+    lines.slice(1).forEach((line) => {
+        const values = line.split(',');
 
         if (values.length !== header.length) {
             console.warn(`field count mismatch.`);
-            continue;
+            return;
         }
 
         const row = {};
-        for (let j = 0; j < header.length; j++) {
-            row[header[j]] = values[j]?.trim() || '';
-        }
+        header.forEach((key, j) => {
+            if (requiredFields.has(key)) {
+                const val = values[j];
+                row[key] = (val ? val.trim() : '');
+            }
+        });
 
         const reading = new WeatherFields(row);
         //push the record to the weatherRecords array
         weatherRecords.push(reading);
-    }
+    });
 
     return weatherRecords;
 }

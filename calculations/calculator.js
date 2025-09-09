@@ -1,23 +1,19 @@
-function filterReadingsByYear(readings, year) {
-    return readings.filter(r => r && r.date instanceof Date && !isNaN(r.date) && r.date.getFullYear() === year);
-}
+const filterReadingsByYear = (readings, year) => readings.filter(r => r && r.date instanceof Date && !isNaN(r.date) && r.date.getFullYear() === year);
 
-function filterReadingsByYearMonth(readings, year, month) {
-    return readings.filter(r => r.date instanceof Date && !isNaN(r.date)
-        && r.date.getFullYear() === year && (r.date.getMonth() + 1) === month);
-}
+const filterReadingsByYearMonth = (readings, year, month) => readings.filter(r => r.date instanceof Date && !isNaN(r.date)
+    && r.date.getFullYear() === year && (r.date.getMonth() + 1) === month);
 
 const calculateAverage = (nums) => {
     return nums.length ? nums.reduce((s, n) => s + n, 0) / nums.length : null;
 };
 
-export function calculateYearlyExtremes(readings, year) {
+export const calculateYearlyExtremes = (readings, year) => {
     const yearReadings = filterReadingsByYear(readings, year);
     if (yearReadings.length === 0) return null;
 
     let highestTemp, lowestTemp, mostHumid;
 
-    for (const r of yearReadings) {
+    yearReadings.forEach((r) => {
         if (Number.isFinite(r.maxTemperature)) {
             if (!highestTemp || r.maxTemperature > highestTemp.value) {
                 highestTemp = { value: r.maxTemperature, date: r.date };
@@ -33,12 +29,12 @@ export function calculateYearlyExtremes(readings, year) {
                 mostHumid = { value: r.maxHumidity, date: r.date };
             }
         }
-    }
+    });
 
     return { highestTemp, lowestTemp, mostHumid };
 }
 
-export function calculateMonthlyAverages(readings, year, month) {
+export const calculateMonthlyAverages = (readings, year, month) => {
     const monthReadings = filterReadingsByYearMonth(readings, year, month);
     if (monthReadings.length === 0) return null;
 
@@ -53,6 +49,4 @@ export function calculateMonthlyAverages(readings, year, month) {
     };
 }
 
-export function listMonthlyReadings(readings, year, month) {
-    return filterReadingsByYearMonth(readings, year, month);
-}
+export const listMonthlyReadings = (readings, year, month) => filterReadingsByYearMonth(readings, year, month);

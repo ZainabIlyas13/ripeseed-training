@@ -7,7 +7,7 @@ import { yearlyExtremesReport } from './reports/yearlyExtremesReport.js';
 import { monthlyAveragesReport } from './reports/monthlyAveragesReport.js';
 import { monthlyChartReport } from './reports/monthlyChartReport.js';
 
-function parseAllReadingsFromDataFolder(dataDir) {
+const parseAllReadingsFromDataFolder = (dataDir) => {
     const weatherReadings = [];
 
     const files = fs.readdirSync(dataDir);
@@ -25,7 +25,7 @@ function parseAllReadingsFromDataFolder(dataDir) {
     return weatherReadings;
 }
 
-function main() {
+const main = () => {
     const args = process.argv.slice(2);
     if (args.length < 3) {
         return;
@@ -39,35 +39,37 @@ function main() {
     }
 
     //manage multiple reports
-    for (let i = 1; i < args.length; i += 2) {
-        const flag = args[i];
-        const value = args[i + 1];
-        if (!flag || !value) {
-            console.log('Wrong format for arguments');
-            break;
-        }
-
-        if (flag === '-e') { // yearly extremes
-            const year = parseInt(value, 10);
-            const extremes = calculateYearlyExtremes(weatherReadings, year);
-            //print the report
-            yearlyExtremesReport(extremes);
-        } else if (flag === '-a') { // monthly averages
-            const [yearStr, monthStr] = value.split('/');
-            const year = parseInt(yearStr, 10);
-            const month = parseInt(monthStr, 10);
-            const averages = calculateMonthlyAverages(weatherReadings, year, month);
-            monthlyAveragesReport(averages);
-        } else if (flag === '-c') { // monthly chart
-            const [yearStr, monthStr] = value.split('/');
-            const year = parseInt(yearStr, 10);
-            const month = parseInt(monthStr, 10);
-            const monthReadings = listMonthlyReadings(weatherReadings, year, month);
-            monthlyChartReport(monthReadings, year, month);
-        } else {
-            console.log('Unknown flag');
-        }
-    }
+    args.slice(1)
+        .reduce((pairs, curr, idx, arr) => {
+            if (idx % 2 === 0) pairs.push([curr, arr[idx + 1]]);
+            return pairs;
+        }, [])
+        .forEach(([flag, value]) => {
+            if (!flag || !value) {
+                console.log('Wrong format for arguments');
+                return;
+            }
+            if (flag === '-e') { // yearly extremes
+                const year = parseInt(value, 10);
+                const extremes = calculateYearlyExtremes(weatherReadings, year);
+                //print the report
+                yearlyExtremesReport(extremes);
+            } else if (flag === '-a') { // monthly averages
+                const [yearStr, monthStr] = value.split('/');
+                const year = parseInt(yearStr, 10);
+                const month = parseInt(monthStr, 10);
+                const averages = calculateMonthlyAverages(weatherReadings, year, month);
+                monthlyAveragesReport(averages);
+            } else if (flag === '-c') { // monthly chart
+                const [yearStr, monthStr] = value.split('/');
+                const year = parseInt(yearStr, 10);
+                const month = parseInt(monthStr, 10);
+                const monthReadings = listMonthlyReadings(weatherReadings, year, month);
+                monthlyChartReport(monthReadings, year, month);
+            } else {
+                console.log('Unknown flag');
+            }
+        });
 }
 
 main();
