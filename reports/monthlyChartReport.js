@@ -25,5 +25,9 @@ export function monthlyChartReport(readings, year, month) {
         if (r.minTemperature) {
             console.log(`${dayDate} ${bar(r.minTemperature, BLUE)} ${Math.round(r.minTemperature)}C`);
         }
+        //BONUS TASK
+        if (r.maxTemperature || r.minTemperature) {
+            console.log(`${dayDate} ${bar(r.minTemperature, BLUE)}${bar(r.maxTemperature, RED)} ${Math.round(r.minTemperature)}C-${Math.round(r.maxTemperature)}C`);
+        }
     });
 }
