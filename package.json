@@ -1,0 +1,21 @@
+{
+  "name": "ripeseed-training",
+  "version": "1.0.0",
+  "description": "A repo to train myself on MERN",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ZainabIlyas13/ripeseed-training.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ZainabIlyas13/ripeseed-training/issues"
+  },
+  "homepage": "https://github.com/ZainabIlyas13/ripeseed-training#readme"
+}
